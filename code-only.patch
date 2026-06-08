@@ -1,0 +1,688 @@
+diff --git a/MODIFICATION_PLAN.md b/MODIFICATION_PLAN.md
+new file mode 100644
+index 0000000..4f91993
+--- /dev/null
++++ b/MODIFICATION_PLAN.md
+@@ -0,0 +1,156 @@
++# Independent Heat/Cool Modification — Design Notes
++
++## User requirement (TR, original)
++
++- Isıtma ve soğutma aynı anda birbirlerinden bağımsız çalışabilecek
++- Soğutma: sadece *fridge* sensörü, ayrı setpoint → kompresör
++- Isıtma: sadece *beer* sensörü, ayrı setpoint (veya beer profile) → ısıtıcı
++- Beer profile sekmesi çalışmaya devam edecek, ama sadece ısıtıcıyı kontrol edecek
++  - Biranın fazla soğuması profile sorun değil (soğutma bağımsız, kendi setpoint'inde)
++
++## Current architecture (BrewPiLess master)
++
++- `ControlSettings cs` = { mode, beerSetting, fridgeSetting, heatEstimator, coolEstimator }
++- `updatePID()`: in `modeIsBeer()` (= B or P), runs PID on (beerSetting − beer) → outputs `fridgeSetting`
++- `updateState()`: single hysteresis loop on **fridge sensor** vs `cs.fridgeSetting`
++  - fridge > fridgeSetting + idleHigh → COOLING
++  - fridge < fridgeSetting + idleLow → HEATING
++- `updateOutputs()`: cooler/active ↔ cooling, heater/active ↔ heating
++- Beer profile drives `cs.beerSetting` via `setBeerTemp()`; PID converts to `cs.fridgeSetting`
++- Modes:
++  - OFF
++  - MODE_BEER_CONSTANT (b): PID from beer sensor
++  - MODE_FRIDGE_CONSTANT (f): user sets fridge target directly, no PID
++  - MODE_BEER_PROFILE (p): profile drives beerSetting, PID converts
++
++## New architecture
++
++We **add** a new mode `MODE_INDEPENDENT` (char 'i') that runs two completely independent
++on/off thermostat loops. The old PID-based modes are preserved so users can switch back.
++
++### Loops
++
++- **Cooling loop** — based on `fridgeSensor` only
++  - if `fridgeFast > coolSetpoint + idleRangeHigh` → COOLING
++  - if `fridgeFast <= coolSetpoint + idleRangeLow` → IDLE/cool off
++  - Hysteresis via existing `idleRangeHigh`/`idleRangeLow` (defaults +1 / -1 °C)
++  - Histerezis genişliği `idleRangeHigh − idleRangeLow` (varsayılan 2 °C)
++
++- **Heating loop** — based on `beerSensor` only
++  - if `beerFast < heatSetpoint − idleRangeHigh` → HEATING
++  - if `beerFast >= heatSetpoint − idleRangeLow` → IDLE/heat off
++  - Note: we mirror the hysteresis, so for heating the "low" range matters (sensor must rise
++    by full hysteresis before heat turns off, preventing short cycling)
++
++- The two loops do **not** share state. Both can be active simultaneously. No `mutexDeadTime`
++  between them. No more "wait to cool" or "wait to heat" — replaced with a tiny per-loop
++  minimum-on / minimum-off to protect the compressor and heat wrap.
++
++### Setpoints
++
++- `cs.fridgeSetting` continues to mean "cooler target" in all modes. In INDEPENDENT mode
++  it is the **cool setpoint**.
++- `cs.beerSetting` continues to mean "heater target" in all modes. In INDEPENDENT mode
++  it is the **heat setpoint** (driven by user or by profile).
++- `setBeerTemp()` and `setFridgeTemp()` keep their names and EEPROM-write semantics.
++
++### Modes in the new world
++
++| Mode char | name | cool setpoint | heat setpoint |
++|-----------|------|---------------|---------------|
++| `o` | OFF | — | — |
++| `b` | BEER_CONSTANT (legacy, PID) | PID-derived from `cs.beerSetting` | PID-driven fridge heat |
++| `f` | FRIDGE_CONSTANT (legacy) | user-set `cs.fridgeSetting` | (off) |
++| `p` | BEER_PROFILE (legacy) | PID-derived from profile-driven `cs.beerSetting` | (off) |
++| `i` | **INDEPENDENT** (new) | user-set `cs.fridgeSetting` | user-set or profile-driven `cs.beerSetting` |
++
++### Beer profile in INDEPENDENT mode
++
++- Profile keeps driving `cs.beerSetting` via `setBeerTemp()` (no change needed in BrewKeeper
++  — it already writes to "beerSet" which the firmware maps to `cs.beerSetting`).
++- `setMode('p')` still works in legacy sense; we add `setMode('i')` for the new INDEPENDENT
++  + profile combo.
++- New API: in INDEPENDENT mode the profile can be active (`profile` tab) and ramp
++  `cs.beerSetting` over time. Cooling stays at `cs.fridgeSetting`. They don't interact.
++
++## Concrete code changes
++
++### `src/TempControl.h`
++- Add `#define MODE_INDEPENDENT 'i'`
++- Add helper `modeIsIndependent()` returning `cs.mode == MODE_INDEPENDENT`
++- (Optional) add field comment on `cs.beerSetting` / `cs.fridgeSetting` clarifying meaning
++
++### `src/TempControl.cpp`
++- Rewrite `updatePID()`:
++  - If `modeIsIndependent()`: do nothing (setpoints come straight from user/profile).
++  - Else: keep existing PID logic for legacy modes b/f/p.
++- Rewrite `updateState()`:
++  - Split into two independent sub-state decisions.
++  - Cooling branch uses `fridgeSensor` vs `cs.fridgeSetting`.
++  - Heating branch uses `beerSensor` vs `cs.beerSetting`.
++  - In INDEPENDENT mode, neither branch touches the other's setpoint.
++  - In legacy modes, keep the original behaviour.
++- `updateOutputs()`:
++  - Already correct — `cooler->setActive(cooling)`, `heater->setActive(heating)`. The two
++    state booleans can be true at the same time, so cooler and heater can run in parallel.
++- `detectPeaks()`:
++  - In INDEPENDENT mode: skip the overshoot-based peak detection (no estimator needed for
++    simple on/off control). Just return.
++  - Legacy modes: unchanged.
++- `loadDefaultSettings()`: leave defaults; user can change via web.
++
++### `src/JsonKeys.h`
++- (No new keys needed — `beerSet` and `fridgeSet` already exist and we keep their names.)
++
++### `src/PiLink.cpp`
++- `setBeerSetting` and `setFridgeSetting` keep their current names; no change.
++- `setMode` accepts the new 'i' mode.
++
++### `src/BrewPiProxy.cpp` / `.h`
++- No change — proxy just forwards to `tempControl`. The new mode char 'i' is preserved.
++
++### `src/BrewKeeper.cpp`
++- No change — already writes to "beerSet" which in INDEPENDENT mode is the heat target.
++
++### `htmljs/src/control.tmpl.html` + `script-control.js`
++- Add a 5th nav button: "Independent" (or label it clearly).
++- In INDEPENDENT mode, the page still shows two temp inputs (beer-t, fridge-t) but the
++  semantics are: beer-t = heat target, fridge-t = cool target. Both editable.
++- Add a help text under the inputs clarifying the new semantics.
++
++### `src/Version.h`
++- Bump version so users see the new firmware.
++
++## Backward compatibility
++
++- Old `cs` EEPROM layout is unchanged — same struct, same blob. Existing settings load
++  fine; their semantics just shift slightly in INDEPENDENT mode.
++- Old modes (b, f, p) behave exactly as before.
++- New `i` mode only available if the user selects it. No auto-migration.
++
++## Risks / open questions
++
++- Removing PID in INDEPENDENT mode means the heat wrap will be on/off around setpoint with
++  `idleRangeHigh − idleRangeLow` hysteresis. For a 2 °C default hysteresis, expect ~1 %
++  duty cycle around setpoint. That's the standard behaviour for a homebrew heat belt.
++- If the user has a heat wrap with slow thermal response, 1 °C hysteresis on the beer
++  sensor (not on the wrap surface) is reasonable. They can widen hysteresis via the
++  existing `idleRangeHigh/Low` advanced settings.
++- Compressor protection: we keep `minCoolTime` / `minCoolIdleTime` (existing) for cool,
++  and reuse `minHeatTime` / `minHeatIdleTime` for heat. These were per-mode; in INDEPENDENT
++  we apply them to each loop independently.
++
++## Verification checklist
++
++- [ ] `updatePID()` does nothing when `modeIsIndependent()` — `cs.fridgeSetting` is not
++      overwritten by the PID formula.
++- [ ] In INDEPENDENT mode, `cs.fridgeSetting` is the cool setpoint read from EEPROM.
++- [ ] In INDEPENDENT mode, `cs.beerSetting` is the heat setpoint, editable / profile-driven.
++- [ ] Cooling decision uses `fridgeSensor` only. Beer sensor failure does not block cooling.
++- [ ] Heating decision uses `beerSensor` only. Fridge sensor failure does not block heating.
++- [ ] Both actuators can be active simultaneously.
++- [ ] `minCoolTime` / `minCoolIdleTime` still apply to the cooling branch.
++- [ ] `minHeatTime` / `minHeatIdleTime` still apply to the heating branch.
++- [ ] Beer profile still writes to `cs.beerSetting` via `setBeerTemp()`.
++- [ ] Legacy modes (b, f, p) are bit-for-bit unchanged.
++- [ ] Web UI shows a new tab/mode and the existing input fields are correctly labeled.
+diff --git a/htmljs/src/control.tmpl.html b/htmljs/src/control.tmpl.html
+index db54edc..ef672cb 100644
+--- a/htmljs/src/control.tmpl.html
++++ b/htmljs/src/control.tmpl.html
+@@ -41,6 +41,9 @@
+                     <a class="navitem" id="fridge-m" href="#fridge-s">
+                         <%= control_fridgeconst %>
+                     </a>
++                    <a class="navitem" id="independent-m" href="#independent-s">
++                        <%= control_independent %>
++                    </a>
+                     <a class="navitem" id="off-m" href="#off-s">
+                         <%= control_off %>
+                     </a>
+@@ -138,6 +141,20 @@
+                 <input type="number" size="6" id="fridge-t" style="max-width: 200px"></input>&deg;<span class="t_unit">C</span>
+             </div>
+ 
++            <div id="independent-s" class="detail" style="margin: 16px 0;" layout vertical>
++                <div layout horizontal cross-center style="margin: 4px 0;">
++                    <span><%= control_setcooltemp %></span>
++                    <input type="number" size="6" id="independent-cool-t" style="max-width: 200px"></input>&deg;<span class="t_unit">C</span>
++                </div>
++                <div layout horizontal cross-center style="margin: 4px 0;">
++                    <span><%= control_setheattemp %></span>
++                    <input type="number" size="6" id="independent-heat-t" style="max-width: 200px"></input>&deg;<span class="t_unit">C</span>
++                </div>
++                <div style="margin: 8px 0; font-size: 0.9em; opacity: 0.85;">
++                    <%= control_independent_help %>
++                </div>
++            </div>
++
+             <div id="off-s" class="detail">
+                 <span style="margin: 16px 0;"><%= control_setoff %></span>
+             </div>
+diff --git a/htmljs/src/control_s.tmpl.html b/htmljs/src/control_s.tmpl.html
+index d088e23..7dd2829 100644
+--- a/htmljs/src/control_s.tmpl.html
++++ b/htmljs/src/control_s.tmpl.html
+@@ -41,6 +41,9 @@
+                     <a class="navitem" id="fridge-m" href="#fridge-s">
+                         <%= control_fridgeconst %>
+                     </a>
++                    <a class="navitem" id="independent-m" href="#independent-s">
++                        <%= control_independent %>
++                    </a>
+                     <a class="navitem" id="off-m" href="#off-s">
+                         <%= control_off %>
+                     </a>
+@@ -138,6 +141,20 @@
+                 <input type="number" size="6" id="fridge-t" style="max-width: 200px"></input>&deg;<span class="t_unit">C</span>
+             </div>
+ 
++            <div id="independent-s" class="detail" style="margin: 16px 0;" layout vertical>
++                <div layout horizontal cross-center style="margin: 4px 0;">
++                    <span><%= control_setcooltemp %></span>
++                    <input type="number" size="6" id="independent-cool-t" style="max-width: 200px"></input>&deg;<span class="t_unit">C</span>
++                </div>
++                <div layout horizontal cross-center style="margin: 4px 0;">
++                    <span><%= control_setheattemp %></span>
++                    <input type="number" size="6" id="independent-heat-t" style="max-width: 200px"></input>&deg;<span class="t_unit">C</span>
++                </div>
++                <div style="margin: 8px 0; font-size: 0.9em; opacity: 0.85;">
++                    <%= control_independent_help %>
++                </div>
++            </div>
++
+             <div id="off-s" class="detail">
+                 <span style="margin: 16px 0;"><%= control_setoff %></span>
+             </div>
+diff --git a/htmljs/src/js/script-control.js b/htmljs/src/js/script-control.js
+index 010dd8e..9eab0de 100644
+--- a/htmljs/src/js/script-control.js
++++ b/htmljs/src/js/script-control.js
+@@ -714,7 +714,7 @@ var ControlChart = {
+ 
+ var modekeeper = {
+     initiated: false,
+-    modes: ["profile", "beer", "fridge", "off"],
++    modes: ["profile", "beer", "fridge", "independent", "off"],
+     cmode: 0,
+     dselect: function(m) {
+         var d = document.getElementById(m + "-m");
+@@ -731,7 +731,7 @@ var modekeeper = {
+         var me = this;
+         if (me.initiated) return;
+         me.initiated = true;
+-        for (var i = 0; i < 4; i++) {
++        for (var i = 0; i < me.modes.length; i++) {
+             var m = me.modes[i];
+             document.getElementById(m + "-s").style.display = "none";
+             document.getElementById(m + "-m").onclick = function() {
+@@ -763,6 +763,23 @@ var modekeeper = {
+                 console.log("j{mode:f, fridgeSet:" + v + "}");
+                 BWF.send("j{mode:f, fridgeSet:" + v + "}");
+             }
++        } else if (this.cmode == "independent") {
++            // Independent mode: two setpoints, one for the cool loop
++            // (fridge sensor) and one for the heat loop (beer sensor,
++            // possibly profile-driven). Send both in a single command.
++            var vc = document.getElementById("independent-cool-t").value;
++            var vh = document.getElementById("independent-heat-t").value;
++            var minD = BrewPiSetting.minDegree;
++            var maxD = BrewPiSetting.maxDegree;
++            if (vc == '' || isNaN(vc) || vc > maxD || vc < minD) {
++                alert("<%= script_control_invalid_temperature %>" + vc);
++                return;
++            }
++            if (vh == '' || isNaN(vh) || vh > maxD || vh < minD) {
++                alert("<%= script_control_invalid_temperature %>" + vh);
++                return;
++            }
++            BWF.send("j{mode:i, beerSet:" + vh + ", fridgeSet:" + vc + "}");
+         } else if (this.cmode == "off") {
+             //console.log("j{mode:o}");
+             BWF.send("j{mode:o}");
+diff --git a/htmljs/src/locales/chinese.json b/htmljs/src/locales/chinese.json
+index 3ba7c9e..00ec5af 100644
+--- a/htmljs/src/locales/chinese.json
++++ b/htmljs/src/locales/chinese.json
+@@ -51,6 +51,7 @@
+     "control_beerprofile": "溫度行程",
+     "control_beerconst": "啤酒定溫",
+     "control_fridgeconst": "冰箱定溫",
++    "control_independent": "Independent",
+     "control_off": "關閉",
+     "control_apply": "執行",
+     "control_startdate": "開始日期:",
+@@ -77,6 +78,9 @@
+     "control_save": "儲存",
+     "control_setbeertemp": "啤酒溫度設為:",
+     "control_setfridgetemp": "冰箱溫度設為:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. Cool target is read by the fridge sensor and drives the cooler. Heat target is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "關閉溫控",
+     "control_capstate": "Spunding狀態:",
+     "control_open": "排氣中",
+diff --git a/htmljs/src/locales/english.json b/htmljs/src/locales/english.json
+index c6db44f..0291fa2 100644
+--- a/htmljs/src/locales/english.json
++++ b/htmljs/src/locales/english.json
+@@ -51,6 +51,7 @@
+     "control_beerprofile": "Beer Profile",
+     "control_beerconst": "Beer Const.",
+     "control_fridgeconst": "Fridge Const.",
++    "control_independent": "Independent",
+     "control_off": "Off",
+     "control_apply": "Apply",
+     "control_startdate": "Start Date:",
+@@ -77,6 +78,9 @@
+     "control_save": "Save",
+     "control_setbeertemp": "Set Beer Temp:",
+     "control_setfridgetemp": "Set Fridge temp:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. The {B}cool target{/B} is read by the fridge sensor and drives the cooler. The {B}heat target{/B} is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "Turning temperature control {B}off{/B}.",
+     "control_capstate": "Spunding Status:",
+     "control_open": "Open",
+diff --git a/htmljs/src/locales/italian.json b/htmljs/src/locales/italian.json
+index c03938b..5049755 100644
+--- a/htmljs/src/locales/italian.json
++++ b/htmljs/src/locales/italian.json
+@@ -51,6 +51,7 @@
+     "control_beerprofile": "Profilo Birra",
+     "control_beerconst": "Const. Birra",
+     "control_fridgeconst": "Const. Frigo",
++    "control_independent": "Independent",
+     "control_off": "Spento",
+     "control_apply": "Applica",
+     "control_startdate": "Data inizio:",
+@@ -77,6 +78,9 @@
+     "control_save": "Salva",
+     "control_setbeertemp": "Imposta temperatura  birra:",
+     "control_setfridgetemp": "Imposta temperatura frigo:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. Cool target is read by the fridge sensor and drives the cooler. Heat target is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "Dissativa controllo temperatura.",
+     "control_capstate": "Stato limitazione pressione (Spunding):",
+     "control_open": "Aperto",
+diff --git a/htmljs/src/locales/norwegian.json b/htmljs/src/locales/norwegian.json
+index 830dd9b..b3b2ad9 100644
+--- a/htmljs/src/locales/norwegian.json
++++ b/htmljs/src/locales/norwegian.json
+@@ -50,6 +50,7 @@
+     "control_beerprofile": "Ølprofil",
+     "control_beerconst": "Øl Const.",
+     "control_fridgeconst": "Kjøleskap Const.",
++    "control_independent": "Independent",
+     "control_off": "Av",
+     "control_apply": "Bruk",
+     "control_startdate": "Startdato:",
+@@ -76,6 +77,9 @@
+     "control_save": "Lagre",
+     "control_setbeertemp": "Angi øltemp:",
+     "control_setfridgetemp": "Angi kjøleskapstemp:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. Cool target is read by the fridge sensor and drives the cooler. Heat target is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "Slå temperaturkontroll {B}off{/B}.",
+     "control_capstate": "Lullet Status:",
+     "control_open": "Open",
+diff --git a/htmljs/src/locales/portuguese-br.json b/htmljs/src/locales/portuguese-br.json
+index e4e92b2..31eaf76 100644
+--- a/htmljs/src/locales/portuguese-br.json
++++ b/htmljs/src/locales/portuguese-br.json
+@@ -50,6 +50,7 @@
+     "control_beerprofile": "Perfil de Fermentação",
+     "control_beerconst": "Sensor da Cerveja",
+     "control_fridgeconst": "Sensor da Refrigeração",
++    "control_independent": "Independent",
+     "control_off": "Desligado",
+     "control_apply": "Aplicar",
+     "control_startdate": "Início Data/Hora:",
+@@ -76,6 +77,9 @@
+     "control_save": "Salvar",
+     "control_setbeertemp": "Defina o controle de temperatura pelo sensor da <B \/>cerveja</B \/>:",
+     "control_setfridgetemp": "Defina o controle de temperatura pelo sensor da <B \/>refrigeração</B \/>:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. Cool target is read by the fridge sensor and drives the cooler. Heat target is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "Desativar controle de temperatura",
+     "control_capstate": "Válv. CO2 (Spunding):",
+     "control_open": "Aberta",
+diff --git a/htmljs/src/locales/slovak.json b/htmljs/src/locales/slovak.json
+index 55dd8d4..1056d60 100644
+--- a/htmljs/src/locales/slovak.json
++++ b/htmljs/src/locales/slovak.json
+@@ -50,6 +50,7 @@
+     "control_beerprofile": "Pivný profil",
+     "control_beerconst": "Pivná konštanta",
+     "control_fridgeconst": "Konš. chladničky",
++    "control_independent": "Independent",
+     "control_off": "Vypnuté",
+     "control_apply": "Použiť",
+     "control_startdate": "Dátum začiatku:",
+@@ -76,6 +77,9 @@
+     "control_save": "Uložiť",
+     "control_setbeertemp": "Nastaviť teplotu piva:",
+     "control_setfridgetemp": "Nastaviť teplotu chladničky:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. Cool target is read by the fridge sensor and drives the cooler. Heat target is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "{B}Vypnúť{/B} kontrolovanie teploty.",
+     "control_capstate": "Stav uzáveru:",
+     "control_open": "Otvoriť",
+diff --git a/htmljs/src/locales/spanish.json b/htmljs/src/locales/spanish.json
+index 1959e8e..26183e2 100644
+--- a/htmljs/src/locales/spanish.json
++++ b/htmljs/src/locales/spanish.json
+@@ -50,6 +50,7 @@
+     "control_beerprofile": "Cerveza Perfil",
+     "control_beerconst": "Cerveza Constante",
+     "control_fridgeconst": "Nevera Constante",
++    "control_independent": "Independent",
+     "control_off": "Apagar",
+     "control_apply": "Aplicar",
+     "control_startdate": "Fecha de inicio:",
+@@ -76,6 +77,9 @@
+     "control_save": "Guardar",
+     "control_setbeertemp": "Establecer temperatura de cerveza:",
+     "control_setfridgetemp": "Establecer temperatura de nevera:",
++    "control_setheattemp": "Set Heat Target:",
++    "control_setcooltemp": "Set Cool Target:",
++    "control_independent_help": "Independent mode: two separate on/off loops. Cool target is read by the fridge sensor and drives the cooler. Heat target is read by the beer sensor and drives the heater. They can run at the same time. If a beer profile is active, the profile drives the heat target while the cool target stays fixed.",
+     "control_setoff": "Desactivar control de temperatura.",
+     "control_capstate": "Estado del tap&oacute;n:",
+     "control_open": "Abierto",
+diff --git a/src/BrewKeeper.cpp b/src/BrewKeeper.cpp
+index 11399cb..52ca997 100755
+--- a/src/BrewKeeper.cpp
++++ b/src/BrewKeeper.cpp
+@@ -54,8 +54,10 @@ void BrewKeeper::keep(time_t now)
+ 	mode = brewPi.getMode();
+ 	beerSet = brewPi.getBeerSet();
+ 
+-	// run in loop()
+-	if (mode != 'p') return;
++	// run the profile in legacy profile mode (PID) and in the new
++	// independent mode (where the profile drives the *heat* setpoint
++	// while cooling stays independent on the fridge setpoint).
++	if (mode != BrewPiModeBeerProfile && mode != 'i') return;
+ 
+ 	// check unit
+ 	_profile.setUnit(unit);
+@@ -81,7 +83,10 @@ void BrewKeeper::keep(time_t now)
+ void BrewKeeper::setModeFromRemote(char mode){
+ 	char ori_mode;
+ 	ori_mode = brewPi.getMode();
+-	if(mode == BrewPiModeBeerProfile && ori_mode != BrewPiModeBeerProfile) _profile.setScheduleStartDate(TimeKeeper.getTimeSeconds());
++	// Start the profile schedule when entering profile mode (legacy or
++	// the new independent+profile combination).
++	if((mode == BrewPiModeBeerProfile || mode == 'i') && ori_mode != mode)
++		_profile.setScheduleStartDate(TimeKeeper.getTimeSeconds());
+ /*	char buff[36];
+ 	sprintf(buff,"j{mode:%c}",mode);
+ 	DBG_PRINTF("write:%s\n",buff);
+diff --git a/src/BrewPiProxy.cpp b/src/BrewPiProxy.cpp
+index fc75bad..11f9fc8 100755
+--- a/src/BrewPiProxy.cpp
++++ b/src/BrewPiProxy.cpp
+@@ -129,7 +129,7 @@ uint32_t BrewPiProxy::getStatusTime(void){
+ 	if(state==IDLE){
+ 		time = 	min(tempControl.timeSinceCooling(), tempControl.timeSinceHeating());
+ 	}
+-	else if(state==COOLING || state==HEATING){
++	else if(state==COOLING || state==HEATING || state==HEAT_AND_COOL){
+ 		time = sinceIdleTime;
+ 	}
+ 	else if(state==COOLING_MIN_TIME){
+diff --git a/src/DisplayLcd.cpp b/src/DisplayLcd.cpp
+index c23ca4e..8747068 100755
+--- a/src/DisplayLcd.cpp
++++ b/src/DisplayLcd.cpp
+@@ -254,6 +254,9 @@ void LcdDisplay::printState(void){
+ 				part1 = STR_Heat;
+ 				part2 = STR__time_left;
+ 				break;
++			case HEAT_AND_COOL:
++				part1 = PSTR("Heat+Cool");
++				break;
+ 			case DOOR_OPEN:
+ 				part1 = PSTR("Door open");
+ 				break;
+@@ -272,7 +275,7 @@ void LcdDisplay::printState(void){
+ 	if(state==IDLE){
+ 		time = 	min(tempControl.timeSinceCooling(), tempControl.timeSinceHeating());
+ 	}
+-	else if(state==COOLING || state==HEATING){
++	else if(state==COOLING || state==HEATING || state==HEAT_AND_COOL){
+ 		time = sinceIdleTime;
+ 	}
+ 	else if(state==COOLING_MIN_TIME){
+diff --git a/src/TempControl.cpp b/src/TempControl.cpp
+index 5f7b87d..a19c408 100755
+--- a/src/TempControl.cpp
++++ b/src/TempControl.cpp
+@@ -128,6 +128,13 @@ void TempControl::updateTemperatures(void){
+ }
+ 
+ void TempControl::updatePID(void){
++	if(modeIsIndependent()){
++		// Independent mode: no PID. Cool and heat setpoints come straight
++		// from the user (or beer profile for the heat setpoint).
++		// Mark fridgeSetting/beerSetting as valid so updateState() doesn't
++		// bail out with INVALID_TEMP.
++		return;
++	}
+ 	static unsigned char integralUpdateCounter = 0;
+ 	if(tempControl.modeIsBeer()){
+ 		if(cs.beerSetting == INVALID_TEMP){
+@@ -242,6 +249,95 @@ void TempControl::updateState(void){
+ 	temperature fridgeFast = fridgeSensor->readFastFiltered();
+ 	temperature beerFast = beerSensor->readFastFiltered();
+ 	ticks_seconds_t secs = ticks.seconds();
++
++	// -------------------------------------------------------------------
++	// Independent (no-PID) mode: two independent on/off thermostat loops
++	// that can run simultaneously. Cooling is driven by the fridge sensor
++	// and the cool setpoint (cs.fridgeSetting). Heating is driven by the
++	// beer sensor and the heat setpoint (cs.beerSetting, possibly
++	// profile-driven). The two loops do NOT share a mutex and do NOT
++	// touch each other's setpoint.
++	// -------------------------------------------------------------------
++	if(modeIsIndependent()){
++		lastIdleTime = secs;
++
++		// ---- COOL LOOP ----
++		bool coolWanted  = fridgeSensor->isConnected() &&
++		                   cs.fridgeSetting != INVALID_TEMP &&
++		                   fridgeFast > (cs.fridgeSetting + cc.idleRangeHigh);
++		bool coolSatisfied = fridgeSensor->isConnected() &&
++		                     cs.fridgeSetting != INVALID_TEMP &&
++		                     fridgeFast <= (cs.fridgeSetting + cc.idleRangeLow);
++
++		// ---- HEAT LOOP ----
++		bool heatWanted  = beerSensor->isConnected() &&
++		                   cs.beerSetting != INVALID_TEMP &&
++		                   beerFast < (cs.beerSetting - cc.idleRangeHigh);
++		bool heatSatisfied = beerSensor->isConnected() &&
++		                     cs.beerSetting != INVALID_TEMP &&
++		                     beerFast >= (cs.beerSetting - cc.idleRangeLow);
++
++		bool coolOn = stateIsCooling();
++		bool heatOn = stateIsHeating();
++
++		// COOL transitions
++		if(coolOn){
++			if(coolSatisfied){
++				// fridge has dropped to (or below) the lower idle band
++				if(sinceCooling > cc.minCoolTime){
++					lastCoolTime = secs;
++					coolOn = false;
++				}
++				// else stay in COOLING_MIN_TIME — state handled below
++			}
++		} else if(coolWanted){
++			if(sinceCooling > cc.minCoolIdleTime){
++				lastCoolTime = secs;
++				coolOn = true;
++			}
++		}
++
++		// HEAT transitions
++		if(heatOn){
++			if(heatSatisfied){
++				// beer has risen to (or above) the lower idle band (mirrored)
++				if(sinceHeating > cc.minHeatTime){
++					lastHeatTime = secs;
++					heatOn = false;
++				}
++			}
++		} else if(heatWanted){
++			if(sinceHeating > cc.minHeatIdleTime){
++				lastHeatTime = secs;
++				heatOn = true;
++			}
++		}
++
++		// Synthesize the state for the LCD / status output. Use the new
++		// HEAT_AND_COOL value when both actuators are on at the same time.
++		if(stayIdle){
++			state = IDLE;
++		} else if(coolOn && heatOn){
++			state = HEAT_AND_COOL;
++		} else if(coolOn){
++			// Distinguish "in minimum on time" so the LCD can show a countdown
++			if(coolSatisfied && sinceCooling <= cc.minCoolTime){
++				state = COOLING_MIN_TIME;
++			} else {
++				state = COOLING;
++			}
++		} else if(heatOn){
++			if(heatSatisfied && sinceHeating <= cc.minHeatTime){
++				state = HEATING_MIN_TIME;
++			} else {
++				state = HEATING;
++			}
++		} else {
++			state = IDLE;
++		}
++		return;
++	}
++
+ 	switch(state)
+ 	{
+ 		case IDLE:
+@@ -402,6 +498,14 @@ void TempControl::updateOutputs(void) {
+ 
+ 
+ void TempControl::detectPeaks(void){
++	// In independent (no-PID) mode we do not need to learn the cool/heat
++	// overshoot estimators: each loop is a plain on/off thermostat around
++	// its own setpoint. Skip the peak detection work.
++	if(modeIsIndependent()){
++		doPosPeakDetect = false;
++		doNegPeakDetect = false;
++		return;
++	}
+ 	//detect peaks in fridge temperature to tune overshoot estimators
+ 	LOG_ID_TYPE detected = 0;
+ 	temperature peak, estimate, error, oldEstimator, newEstimator;
+@@ -643,10 +747,10 @@ void TempControl::setFridgeTemp(temperature newTemp){
+ }
+ 
+ bool TempControl::stateIsCooling(void){
+-	return (state==COOLING || state==COOLING_MIN_TIME);
++	return (state==COOLING || state==COOLING_MIN_TIME || state==HEAT_AND_COOL);
+ }
+ bool TempControl::stateIsHeating(void){
+-	return (state==HEATING || state==HEATING_MIN_TIME);
++	return (state==HEATING || state==HEATING_MIN_TIME || state==HEAT_AND_COOL);
+ }
+ 
+ const ControlConstants TempControl::ccDefaults PROGMEM =
+diff --git a/src/TempControl.h b/src/TempControl.h
+index d9c860a..e3969ec 100755
+--- a/src/TempControl.h
++++ b/src/TempControl.h
+@@ -81,6 +81,11 @@ struct ControlVariables{
+ #define MODE_BEER_PROFILE 'p'
+ #define MODE_OFF 'o'
+ #define MODE_TEST 't'
++// Independent mode: two independent on/off thermostat loops.
++//   * cooling: fridge sensor vs cs.fridgeSetting (cool setpoint)
++//   * heating: beer sensor   vs cs.beerSetting   (heat setpoint, may be profile-driven)
++// Heat and cool can run simultaneously; no PID, no mutex between them.
++#define MODE_INDEPENDENT 'i'
+ 
+ 
+ enum states{
+@@ -94,6 +99,7 @@ enum states{
+ 	WAITING_FOR_PEAK_DETECT,	// 7
+ 	COOLING_MIN_TIME,			// 8
+ 	HEATING_MIN_TIME,			// 9
++	HEAT_AND_COOL,				// 10 — both actuators active simultaneously (INDEPENDENT mode)
+ 	NUM_STATES
+ };
+ 
+@@ -163,6 +169,11 @@ class TempControl{
+ 		return cs.mode;
+ 	}
+ 
++	// True if the controller is in the new independent (no-PID) mode.
++	TEMP_CONTROL_METHOD bool modeIsIndependent(void){
++		return cs.mode == MODE_INDEPENDENT;
++	}
++
+ 	TEMP_CONTROL_METHOD unsigned char getState(void){
+ 		return state;
+ 	}
+diff --git a/src/Version.h b/src/Version.h
+index 7b8b4bb..0c18ab1 100755
+--- a/src/Version.h
++++ b/src/Version.h
+@@ -20,7 +20,7 @@
+ #ifndef VERSION_H_
+ #define VERSION_H_
+ 
+-#define VERSION_STRING "0.2.4"
++#define VERSION_STRING "0.3.0-indep"
+ 
+ 
+ #endif /* VERSION_H_ */
