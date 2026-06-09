@@ -467,9 +467,16 @@ Pressure    13.5 psi
 }
 
 void SmartDisplay::_drawIp(){
-    PhysicalLcdDriver *lcd=getLcd(); 
+    PhysicalLcdDriver *lcd=getLcd();
+    if(WiFi.status() == WL_CONNECTED){
+        // WiFi bağlıysa IP'yi göster (etiketi koru). Satırın tamamını silme
+        lcd->setCursor(3,3);
+        lcd->print(_ip.toString().c_str());
+        return;
+    }
+    // WiFi bağlı değilse, sadece IP değer alanını temizle (etiket "IP " durur)
     lcd->setCursor(3,3);
-    lcd->print(_ip.toString().c_str());
+    lcd->print("                 ");
 }
 
 void SmartDisplay::_drawHumidity(){

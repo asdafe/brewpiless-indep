@@ -446,6 +446,7 @@
     "state_text_wait_for_peak": "Čakanie na vrchol",
     "state_text_cooling_min_time": "Zvyšný čas chladenia {time}",
     "state_text_heating_min_time": "Zvyšný čas ohrevu {time}",
+    "state_text_heat_and_cool": "Kúrenie a chladenie",
     "state_text_invalid": "Neplatný stav",
 
     "time_format_short": "{MM}m{SS}",

@@ -446,6 +446,7 @@
     "state_text_wait_for_peak": "Venter på toppen",
     "state_text_cooling_min_time": "Kjøletid igjen {time}",
     "state_text_heating_min_time": "Kjøletid igjen {time}",
+    "state_text_heat_and_cool": "Oppvarming og kjøling",
     "state_text_invalid": "Ugyldig tilstand",
 
     "time_format_short": "{MM} m {SS}",

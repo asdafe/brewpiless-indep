@@ -1,0 +1,1321 @@
+Running "copy:jsfiles" (copy) task
+Created 1 directory, copied 40 files
+
+Running "processhtml:dist" (processhtml) task
+
+Running "htmlmin:dev" (htmlmin) task
+Minified 14 files
+
+Running "sass:dev" (sass) task
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-config.scss 1:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-control.scss 1:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-config.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-control.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-config.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-control.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-config.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-control.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-config.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-control.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-gravity.scss 1:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-gravity.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-gravity.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-gravity.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-gravity.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style-control.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style-control.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style-config.scss 4:9    root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style-control.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style-config.scss 4:9    root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style-control.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style-config.scss 4:9    root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style-control.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style-config.scss 4:9    root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style-config.scss 4:9    root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style-gravity.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style-gravity.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style-gravity.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style-gravity.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style-gravity.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-logging.scss 1:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-logging.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-logging.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-logging.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-logging.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-control.scss 6:9    root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-control.scss 6:9    root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-pressure.scss 1:9  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-config.scss 6:9     root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-pressure.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-config.scss 6:9     root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-pressure.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-pressure.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-pressure.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-control.scss 8:9           root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-control.scss 8:9           root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-gravity.scss 6:9    root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-gravity.scss 6:9    root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-config.scss 9:9            root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-config.scss 9:9            root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-gravity.scss 7:9           root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-gravity.scss 7:9           root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style-logging.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style-logging.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style-logging.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style-logging.scss 4:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style-logging.scss 4:9   root stylesheet
+
+WARNING: 12 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+WARNING: 13 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-logging.scss 6:9    root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-logging.scss 6:9    root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-logging.scss 7:9           root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-logging.scss 7:9           root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style-pressure.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style-pressure.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style-pressure.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style-pressure.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style-pressure.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-setup.scss 1:9  root stylesheet
+
+WARNING: 13 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-setup.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-setup.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style-setup.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style-setup.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import 'import/vars';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style.scss 1:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+2 │ @import 'import/mixins';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style.scss 2:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+3 │ @import 'layout/reset';
+  │         ^^^^^^^^^^^^^^
+  ╵
+    src\styles\style.scss 3:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+4 │ @import 'layout/typo';
+  │         ^^^^^^^^^^^^^
+  ╵
+    src\styles\style.scss 4:9  root stylesheet
+
+DEPRECATION WARNING [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+5 │ @import 'layout/layout';
+  │         ^^^^^^^^^^^^^^^
+  ╵
+    src\styles\style.scss 5:9  root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-pressure.scss 6:9   root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-pressure.scss 6:9   root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style-setup.scss 4:9     root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style-setup.scss 4:9     root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style-setup.scss 4:9     root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style-setup.scss 4:9     root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style-setup.scss 4:9     root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2) or calc($h1-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:59  @import
+    src\styles\style.scss 4:9           root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h1-fontsize, 2.5) or calc($h1-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+34 │ h1 { font-size: $h1-fontsize; line-height: 110%; margin: ($h1-fontsize / 2) 0 ($h1-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 34:80  @import
+    src\styles\style.scss 4:9           root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-pressure.scss 9:9          root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-pressure.scss 9:9          root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2) or calc($h2-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:59  @import
+    src\styles\style.scss 4:9           root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h2-fontsize, 2.5) or calc($h2-fontsize / 2.5)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+35 │ h2 { font-size: $h2-fontsize; line-height: 110%; margin: ($h2-fontsize / 2) 0 ($h2-fontsize / 2.5) 0;}
+   │                                                                                ^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 35:80  @import
+    src\styles\style.scss 4:9           root stylesheet
+
+DEPRECATION WARNING [slash-div]: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($h3-fontsize, 2) or calc($h3-fontsize / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │ h3 { font-size: $h3-fontsize; line-height: 110%; margin: ($h3-fontsize / 2) 0 ($h3-fontsize / 2.5) 0;}
+   │                                                           ^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\layout\_typo.scss 36:59  @import
+    src\styles\style.scss 4:9           root stylesheet
+
+WARNING: 19 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-setup.scss 6:9      root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style-setup.scss 6:9      root stylesheet
+
+WARNING: 12 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-setup.scss 7:9             root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style-setup.scss 7:9             root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style.scss 6:9            root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -68%)
+color.adjust($color, $lightness: -20%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+224 │     color: darken($primary-color, 20%);
+    │            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\styles\layout\_base.scss 224:12  @import
+    src\styles\style.scss 6:9            root stylesheet
+
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style.scss 9:9                   root stylesheet
+
+DEPRECATION WARNING [color-functions]: darken() is deprecated. Suggestions:
+
+color.scale($color, $lightness: -34%)
+color.adjust($color, $lightness: -10%)
+
+More info: https://sass-lang.com/d/color-functions
+
+   ╷
+38 │         background-color: darken($primary-color, 10);
+   │                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    src\styles\ui-elements\_buttons.scss 38:21  @import
+    src\styles\style.scss 9:9                   root stylesheet
+
+WARNING: 11 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+WARNING: 11 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.
+
+
+Running "postcss:dist" (postcss) task
+>> 7 processed stylesheets created.
+>> 7 sourcemaps created.
+
+Running "comboall:main" (comboall) task
+File "dist/index.tmpl.htm" created.
+File "dist/index_s.tmpl.htm" created.
+File "dist/control.tmpl.htm" created.
+File "dist/control_s.tmpl.htm" created.
+File "dist/setup.tmpl.htm" created.
+File "dist/gravity.tmpl.htm" created.
+File "dist/gravity_e32.tmpl.htm" created.
+File "dist/logging.tmpl.htm" created.
+File "dist/config.tmpl.htm" created.
+File "dist/pressure.tmpl.htm" created.
+File "dist/BPLLogViewer.tmpl.htm" created.
+File "dist/BPLogWebViewer.tmpl.htm" created.
+File "dist/lcd.htm" created.
+File "dist/backup.htm" created.
+
+Running "htmlmin:dist" (htmlmin) task
+Minified 14 files
+
+Running "multi_lang_site_generator:default" (multi_lang_site_generator) task
+Using default template token
+File "dist/english/index.htm" created.
+File "dist/english/index_s.htm" created.
+File "dist/english/control.htm" created.
+File "dist/english/control_s.htm" created.
+File "dist/english/setup.htm" created.
+File "dist/english/gravity.htm" created.
+File "dist/english/gravity_e32.htm" created.
+File "dist/english/logging.htm" created.
+File "dist/english/config.htm" created.
+File "dist/english/pressure.htm" created.
+File "dist/english/BPLogWebViewer.htm" created.
+File "dist/english/BPLLogViewer.htm" created.
+File "dist/english/backup.htm" created.
+File "dist/chinese/index.htm" created.
+File "dist/chinese/index_s.htm" created.
+File "dist/chinese/control.htm" created.
+File "dist/chinese/control_s.htm" created.
+File "dist/chinese/setup.htm" created.
+File "dist/chinese/gravity.htm" created.
+File "dist/chinese/gravity_e32.htm" created.
+File "dist/chinese/logging.htm" created.
+File "dist/chinese/config.htm" created.
+File "dist/chinese/pressure.htm" created.
+File "dist/chinese/BPLogWebViewer.htm" created.
+File "dist/chinese/BPLLogViewer.htm" created.
+File "dist/chinese/backup.htm" created.
+File "dist/spanish/index.htm" created.
+File "dist/spanish/index_s.htm" created.
+File "dist/spanish/control.htm" created.
+File "dist/spanish/control_s.htm" created.
+File "dist/spanish/setup.htm" created.
+File "dist/spanish/gravity.htm" created.
+File "dist/spanish/gravity_e32.htm" created.
+File "dist/spanish/logging.htm" created.
+File "dist/spanish/config.htm" created.
+File "dist/spanish/pressure.htm" created.
+File "dist/spanish/BPLogWebViewer.htm" created.
+File "dist/spanish/BPLLogViewer.htm" created.
+File "dist/spanish/backup.htm" created.
+File "dist/portuguese-br/index.htm" created.
+File "dist/portuguese-br/index_s.htm" created.
+File "dist/portuguese-br/control.htm" created.
+File "dist/portuguese-br/control_s.htm" created.
+File "dist/portuguese-br/setup.htm" created.
+File "dist/portuguese-br/gravity.htm" created.
+File "dist/portuguese-br/gravity_e32.htm" created.
+File "dist/portuguese-br/logging.htm" created.
+File "dist/portuguese-br/config.htm" created.
+File "dist/portuguese-br/pressure.htm" created.
+File "dist/portuguese-br/BPLogWebViewer.htm" created.
+File "dist/portuguese-br/BPLLogViewer.htm" created.
+File "dist/portuguese-br/backup.htm" created.
+File "dist/slovak/index.htm" created.
+File "dist/slovak/index_s.htm" created.
+File "dist/slovak/control.htm" created.
+File "dist/slovak/control_s.htm" created.
+File "dist/slovak/setup.htm" created.
+File "dist/slovak/gravity.htm" created.
+File "dist/slovak/gravity_e32.htm" created.
+File "dist/slovak/logging.htm" created.
+File "dist/slovak/config.htm" created.
+File "dist/slovak/pressure.htm" created.
+File "dist/slovak/BPLogWebViewer.htm" created.
+File "dist/slovak/BPLLogViewer.htm" created.
+File "dist/slovak/backup.htm" created.
+File "dist/italian/index.htm" created.
+File "dist/italian/index_s.htm" created.
+File "dist/italian/control.htm" created.
+File "dist/italian/control_s.htm" created.
+File "dist/italian/setup.htm" created.
+File "dist/italian/gravity.htm" created.
+File "dist/italian/gravity_e32.htm" created.
+File "dist/italian/logging.htm" created.
+File "dist/italian/config.htm" created.
+File "dist/italian/pressure.htm" created.
+File "dist/italian/BPLogWebViewer.htm" created.
+File "dist/italian/BPLLogViewer.htm" created.
+File "dist/italian/backup.htm" created.
+File "dist/norwegian/index.htm" created.
+File "dist/norwegian/index_s.htm" created.
+File "dist/norwegian/control.htm" created.
+File "dist/norwegian/control_s.htm" created.
+File "dist/norwegian/setup.htm" created.
+File "dist/norwegian/gravity.htm" created.
+File "dist/norwegian/gravity_e32.htm" created.
+File "dist/norwegian/logging.htm" created.
+File "dist/norwegian/config.htm" created.
+File "dist/norwegian/pressure.htm" created.
+File "dist/norwegian/BPLogWebViewer.htm" created.
+File "dist/norwegian/BPLLogViewer.htm" created.
+File "dist/norwegian/backup.htm" created.
+
+Running "compress:main" (compress) task
+>> Compressed 92 files.
+
+Done.

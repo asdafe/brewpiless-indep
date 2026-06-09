@@ -6,7 +6,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-htmlmin'
   grunt.loadNpmTasks 'grunt-contrib-jshint'
-  grunt.loadNpmTasks 'grunt-contrib-sass'
+  grunt.loadNpmTasks 'grunt-sass'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-postcss'
@@ -122,6 +122,7 @@ module.exports = (grunt) ->
     sass:
       dev:
         options:
+          implementation: require('sass')
           style: 'expanded'
         expand: true
         cwd: 'src/styles/'

@@ -445,6 +445,7 @@
     "state_text_wait_for_peak": "Esperando pico",
     "state_text_cooling_min_time": "Enfriando tiempo min {time}",
     "state_text_heating_min_time": "Calentando tiempo min {time}",
+    "state_text_heat_and_cool": "Calentando y enfriando",
     "state_text_invalid": "Estado inv&aacute;lido",
 
     "time_format_short": "{MM}m{SS}",

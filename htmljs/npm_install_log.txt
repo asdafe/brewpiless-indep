@@ -1,0 +1,7 @@
+npm warn deprecated npmlog@4.1.2: This package is no longer supported.
+npm warn deprecated are-we-there-yet@1.1.7: This package is no longer supported.
+npm warn deprecated prebuild-install@5.3.6: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
+npm warn deprecated gauge@2.7.4: This package is no longer supported.
+npm warn deprecated iltorb@2.4.5: The zlib module provides APIs for brotli compression/decompression starting with Node.js v10.16.0, please use it over iltorb
+
+up to date in 3s

@@ -446,6 +446,7 @@
     "state_text_wait_for_peak": "等待峰值",
     "state_text_cooling_min_time": "冷卻時間剩下 {time}",
     "state_text_heating_min_time": "加熱時間剩下 {time}",
+    "state_text_heat_and_cool": "加熱及冷卻",
     "state_text_invalid": "不正確的狀態",
 
     "time_format_short": "{MM}分{SS}",

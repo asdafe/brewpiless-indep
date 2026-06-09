@@ -449,6 +449,7 @@
     "state_text_wait_for_peak": "Waiting for Peak",
     "state_text_cooling_min_time": "Cool Time left {time}",
     "state_text_heating_min_time": "Heat Time left {time}",
+    "state_text_heat_and_cool": "Heating and Cooling",
     "state_text_invalid": "Invalid State",
 
     "time_format_short": "{MM}m{SS}",

@@ -218,13 +218,15 @@
         "<%= state_text_wait_to_cool %>",
         "<%= state_text_wait_to_heat %>",
         "<%= state_text_wait_for_peak %>",
-        "<%= state_text_cooling_min_time %>",
-        "<%= state_text_heating_min_time %>",
-        "<%= state_text_invalid %>"
+           "<%= state_text_cooling_min_time %>",
+           "<%= state_text_heating_min_time %>",
+           "<%= state_text_heat_and_cool %>",
+           "<%= state_text_invalid %>"
     ];
 
     function genStateText(state, duration) {
         if (state == 1 || state == 2 || state == 10 || state == 7) return StateText[state];
+            if (state == 8) return StateText[8]; // Added for heat and cool state
 
         var timestr = "";
         var mm = Math.floor(duration / 60);
@@ -270,7 +272,7 @@
             b: "<%= mode_beer_const %>",
             f: "<%= mode_fridge_const %>",
             p: "<%= mode_beer_profile %>",
-            i: "Invalid"
+            i: "<%= control_independent %>"
         };
 
         Object.keys(status).map(function(key, i) {
@@ -295,7 +297,7 @@
             b: "Beer Const.",
             f: "Fridge Const.",
             p: "Beer Profile",
-            i: "Invalid"
+            i: "<%= control_independent %>"
         };
 
         function showTemp(tp) {

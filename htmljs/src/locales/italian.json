@@ -447,6 +447,7 @@
     "state_text_wait_for_peak": "In attesa del Picco",
     "state_text_cooling_min_time": "Tempo di raffredamento rimanente {time}",
     "state_text_heating_min_time": "Tempo di riscaldamento rimanente {time}",
+    "state_text_heat_and_cool": "Riscaldamento e Raffreddamento",
     "state_text_invalid": "Stato invalido",
 
     "time_format_short": "{MM}m{SS}",
