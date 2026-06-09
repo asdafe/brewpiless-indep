@@ -144,7 +144,7 @@ void SharedDisplayManager::previous(){
     }
 }
 
-void SharedDisplayManager::SharedDisplayManager::forcePrimary(bool primary){
+void SharedDisplayManager::forcePrimary(bool primary){
     // forced to start to switch to _head
     if(primary){
         _switch(_head);

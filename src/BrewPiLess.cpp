@@ -473,8 +473,10 @@ class BrewPiWebHandler: public AsyncWebHandler
   					//You will not be asked for more bytes once the content length has been reached.
   					//Keep in mind that you can not delay or yield waiting for more data!
   					//Send what you currently have and you will be asked for more again
-  					memcpy(buffer,file + index, maxLen);
-					return maxLen;
+  					size_t remaining = size - index;
+  					size_t chunkLen = remaining > maxLen ? maxLen : remaining;
+  					memcpy(buffer,file + index, chunkLen);
+					return chunkLen;
 				});
 
 				#else
