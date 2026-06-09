@@ -597,6 +597,10 @@
 #define SupportBleHydrometer true
 #define SupportPillHydrometer true
 #endif
+
+#if SupportBleHydrometer
+#define gravity_htm_gz gravity_e32_htm_gz
+#endif
 /**************************************************************************************/
 /*  Configuration: 																	  */
 /*  Only one setting: the serial used to connect to.                                  */
