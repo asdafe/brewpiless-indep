@@ -468,13 +468,13 @@ Pressure    13.5 psi
 
 void SmartDisplay::_drawIp(){
     PhysicalLcdDriver *lcd=getLcd();
-    if(WiFi.status() == WL_CONNECTED){
-        // WiFi bağlıysa IP'yi göster (etiketi koru). Satırın tamamını silme
+    IPAddress ip = WiFi.localIP();
+    if(ip != IPAddress(0,0,0,0)){
         lcd->setCursor(3,3);
-        lcd->print(_ip.toString().c_str());
+        lcd->print(ip.toString().c_str());
         return;
     }
-    // WiFi bağlı değilse, sadece IP değer alanını temizle (etiket "IP " durur)
+    // IP değeri yoksa, sadece IP alanını temizle (etiket "IP " durur)
     lcd->setCursor(3,3);
     lcd->print("                 ");
 }

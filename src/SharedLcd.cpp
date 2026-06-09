@@ -130,6 +130,7 @@ void SharedDisplayManager::setDisplayMode(uint8_t mode){
 
 
 void SharedDisplayManager::next(){
+    if(WiFi.status() == WL_CONNECTED) return;
     if(_current != NULL){
         //DBG_PRINTF("switch to %u\n",(unsigned long) _current->_next);
         _switch(_current->_next);
@@ -137,6 +138,7 @@ void SharedDisplayManager::next(){
 }
 
 void SharedDisplayManager::previous(){
+    if(WiFi.status() == WL_CONNECTED) return;
     if(_current != NULL){
         _switch(_current->_previous);
     }
@@ -181,6 +183,16 @@ void SharedDisplayManager::loop(){
         DBG_PRINTF("*LCD changes to %d\n", _mode);
         return;
     }
+
+    bool connected = (WiFi.status() == WL_CONNECTED);
+    if(connected){
+        if(!_isForcedPrimary){
+            forcePrimary(true);
+        }
+    } else if(_isForcedPrimary){
+        forcePrimary(false);
+    }
+
     _current->loop();
     if(!_isForcedPrimary && _mode == ShareModeRotate ){
         if(millis() -_switchTime > SWITCH_TIME) next();
